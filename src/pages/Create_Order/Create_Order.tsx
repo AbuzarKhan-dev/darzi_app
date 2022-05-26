@@ -17,7 +17,6 @@ const CreateOrder = () => {
   const [totalCost, setTotalCost] = useState("");
   const [advancePaid, setAdvancePaid] = useState("");
   const [leftPayment, setLeftPayment] = useState("");
-  const [loading, setLoading] = useState(false);
   const { createOrder } = useDataBase();
   const navigate = useNavigate();
 
@@ -44,18 +43,11 @@ const CreateOrder = () => {
         advancePaid,
         leftPayment
       );
-    setLoading(true);
     navigate("/");
   }
 
 
   return (
-    <>
-      {loading === true ? (
-        <div className="w-full min-h-[100vh] flex justify-center items-center">
-          <div className="border-t-[5px] border-green-400 rounded-[50%] w-[120px] h-[120px] animate-spin"></div>
-        </div>
-      ) : (
         <div className="py-[50px] px-[10px]">
           <h1 className="text-green-400 mb-[30px] w-fit mx-auto text-[2rem] tracking-[1px]">
             Create Order
@@ -138,9 +130,7 @@ const CreateOrder = () => {
               </div>
             </form>
           </div>
-        </div>
-      )}
-    </>
+        </div>      
   );
 };
 

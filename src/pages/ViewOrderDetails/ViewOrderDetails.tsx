@@ -6,17 +6,6 @@ import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import moment from "moment";
 
-// type DetailsType = {
-//     Discription?:string,
-//     UploadedFile?:string,
-//     Startdate?: any,
-//     EndDate?: string,
-//     TotalCost?: string,
-//     AdvancePaid?: string,
-//     LeftPayment?: string,
-//     DocID?: string
-
-// }
 
 const ViewOrderDetail = () => {
   const [docDetails, setdocDetails] = useState<any>();
