@@ -1,28 +1,51 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useDataBase } from "../../context/bdContext";
 
 interface PropsInterface {
-    data?: []
+  data?: [{ Name: string; PhoneNumber: string; redocid: string }];
+  divClasses?: string;
+  ulClasses?: string;
+  insideDivClasses?: string;
+  liClasses?: string;
+  hClasses?: string;
+  pClasses?: string;
 }
 
-// type data = {
-//     doc?: any,
-//     index?: number,
-//     Discription?: string
-// }
+const List = ({
+  data,
+  divClasses,
+  ulClasses,
+  insideDivClasses,
+  liClasses,
+  hClasses,
+  pClasses,
+}: PropsInterface) => {
+  const navigate = useNavigate();
+  const { newOrder } = useDataBase();
 
-const List = ({data}: PropsInterface) => {
-    <div>
-        {/* <ul>
-            {data?.map((doc,index}) => {
-                <li>
-                <h1>Discription</h1>
-                <p>{doc?.Discription}</p> 
-                <h1></h1>
-                </li>
-
-            })}
-        </ul> */}
+  function createOrder(name: string, number: string, id: string) {
+    newOrder(name, number);
+    navigate(`/se-cl-type/${id}`);
+  }
+  return (
+    <div className={divClasses}>
+      <ul className={ulClasses}>
+        {data?.map((doc, index) => (
+          <div
+            className={insideDivClasses}
+            key={index}
+            onClick={() => createOrder(doc?.Name, doc?.PhoneNumber, doc?.redocid)}
+          >
+            <li className={liClasses}>
+              <h1 className={hClasses}>{doc?.Name}</h1>
+              <p className={pClasses}>{doc?.PhoneNumber}</p>
+            </li>
+          </div>
+        ))}
+      </ul>
     </div>
-}
+  );
+};
 
 export default List;

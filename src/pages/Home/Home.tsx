@@ -5,6 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { collection, onSnapshot, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { useDataBase } from "../../context/bdContext";
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
 
 interface PropsInterface {
   divClasses?: string;
@@ -15,7 +19,7 @@ const Home = ({ divClasses }: PropsInterface) => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { id, setDocId } = useDataBase();
+  const { id } = useDataBase();
 
   function getCol() {
     setLoading(true);
@@ -24,11 +28,6 @@ const Home = ({ divClasses }: PropsInterface) => {
       setOrders(snapShots.docs.map((doc) => doc.data()));
       setLoading(false);
     });
-  }
-
-  function viewOrderDetail(docid: string) {
-    setDocId(docid);
-    navigate(`./${docid}`);
   }
 
   async function updateDocument() {
@@ -60,46 +59,38 @@ const Home = ({ divClasses }: PropsInterface) => {
       ) : (
         <div className={`w-full h-full ${divClasses} p-[20px]`}>
           <div
-            className="cursor-pointer w-fit h-fit bg-[#F44250] flex justify-center items-center py-[10px] px-[50px] rounded-[4px]"
-            onClick={() => navigate("/create_order")}
+            className=" fixed bottom-[40px] right-[20px] cursor-pointer w-fit h-fit bg-green-500 flex justify-center items-center py-[20px] px-[20px] rounded-[50%] shadow-md shadow-[#404040]"
+            onClick={() => navigate("/se-or-add")}
           >
-            <Button
-              divClasses=""
-              title="CREATE ORDER"
-              buttonClasses="bg-transparent flex justify-center items-center text-white font-[500]"
-            />
             <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 320 512"
-              className="w-[14px] h-[14px]"
-            >
-              <path
-                fill="#ffffff"
-                d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"
-              />
-            </svg>
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    className="w-[24px] h-[24px]"
+                  >
+                    <path
+                      fill={"#FFFFFF"}
+                      d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"
+                    />
+                  </svg>
           </div>
           {orders?.map((order: any, index: number) => (
             <div
               key={index}
-              className="w-fit h-fit cursor-pointer bg-blue-400 flex justify-center items-center py-[10px] px-[50px] rounded-[4px] mt-[20px]"
-              onClick={() => viewOrderDetail(order.DocID)}
+              className="w-fit h-fit cursor-pointer border-[1px] border-green-400 flex justify-center flex-col rounded-[4px] mt-[10px]"
+              onClick={() => navigate(`/details/${order.DocID}`)}
             >
-              <Button
-                divClasses=""
-                title="CHECK DETAILS"
-                buttonClasses="bg-transparent flex justify-center items-center text-white font-[500]"
-              />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 320 512"
-                className="w-[14px] h-[14px]"
-              >
-                <path
-                  fill="#ffffff"
-                  d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z"
-                />
-              </svg>
+             <Card sx={{ minWidth: 275 , backgroundColor: "transparent"}}>
+            <CardContent>
+              <Typography sx={{ fontSize: 14, color: "#404040" }} color="text.secondary" gutterBottom>
+                Name: {order.Name}
+              </Typography>
+              <Typography sx={{ fontSize: 14, color: "#404040" }} color="text.secondary" gutterBottom>
+                Contact: {order.PhoneNunmber}
+              </Typography>
+      </CardContent>
+      </Card>
             </div>
           ))}
         </div>

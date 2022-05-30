@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import Input from "../../components/Input/Input";
 import { useDataBase } from "../../context/bdContext";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { collection, onSnapshot, doc } from "firebase/firestore";
+import { db } from "../../firebase/firebaseConfig";
 
 
 // interface PropsInterface {
@@ -17,8 +20,11 @@ const CreateOrder = () => {
   const [totalCost, setTotalCost] = useState("");
   const [advancePaid, setAdvancePaid] = useState("");
   const [leftPayment, setLeftPayment] = useState("");
+  const [ docDetails, setdocDetails ]  = useState<any>();
+  const [records, setRecords ] = useState<any>([])
   const { createOrder } = useDataBase();
   const navigate = useNavigate();
+  const { id } = useParams();
 
   function handleInput(e: any) {
     const file = e.target.files;
@@ -32,9 +38,22 @@ const CreateOrder = () => {
     };
   }
 
+  function getDoc() {
+    const colRef = collection(db, "Records");
+    const docRef = doc(colRef, id);
+    onSnapshot(docRef, (snapShots) => {
+      setdocDetails(snapShots.data());
+    });
+  }
+
+  const name = docDetails?.Name;
+  const number = docDetails?.PhoneNumber;
+
   async function newOrder(e: any) {
       createOrder(
         e,
+        name,
+        number,
         discription,
         chooseFile,
         startdate,
@@ -43,14 +62,18 @@ const CreateOrder = () => {
         advancePaid,
         leftPayment
       );
-    navigate("/");
+    navigate("/home");
   }
 
+  useEffect(() => {
+    getDoc();
+
+  },[])
 
   return (
         <div className="py-[50px] px-[10px]">
           <h1 className="text-green-400 mb-[30px] w-fit mx-auto text-[2rem] tracking-[1px]">
-            Create Order
+            CREATE ORDER
           </h1>
           <div className="w-[98%] p-[5px] mx-auto">
             <form

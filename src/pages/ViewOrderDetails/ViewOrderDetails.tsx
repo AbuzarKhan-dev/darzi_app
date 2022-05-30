@@ -10,18 +10,18 @@ import moment from "moment";
 const ViewOrderDetail = () => {
   const [docDetails, setdocDetails] = useState<any>();
   const [date, setdate] = useState();
-  const { docid } = useParams();
+  const { id } = useParams();
 
   function getDoc() {
     const colRef = collection(db, "Orders");
-    const docRef = doc(colRef, docid);
+    const docRef = doc(colRef, id);
     onSnapshot(docRef, (snapShots) => {
       setdocDetails(snapShots.data());
     });
   }
 
   useEffect(() => {
-    getDoc();
+    // getDoc();
     setdate(docDetails?.Startdate);
   }, []);
 
