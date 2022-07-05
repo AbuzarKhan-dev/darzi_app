@@ -108,8 +108,9 @@ const SignIn = () => {
 
   useEffect(() => {
     setError(false);
+    console.log('new patch')
   }, [phoneNumber]);
-
+  
   return (
     <>
       {loading === true ? (
