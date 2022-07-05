@@ -1,24 +1,68 @@
-import React,{ useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { FormControl, Input, InputLabel } from "@mui/material";
 import "../../index.css";
-import Input from "../../components/Input/Input";
-import {
-    RecaptchaVerifier,
-    signInWithPhoneNumber
-  } from "firebase/auth";
-  import { auth } from "../../firebase/firebaseConfig";
-  import { useNavigate } from "react-router-dom";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { auth } from "../../firebase/firebaseConfig";
+import { useNavigate } from "react-router-dom";
 
-  
+interface styleInterface {
+  loaderDiv: string;
+  loader: string;
+  mainDiv: string;
+  wrapperDiv: string;
+  logoHeading: string;
+  errorDiv: string;
+  errorLabel: string;
+  form: {
+    minHeight: any;
+    transform: any;
+    display: any;
+    justifyContent: any;
+    flexDirection: any;
+  };
+  input: {
+    width: string;
+  };
+  submit: { marginTop: any; backgroundColor: any; padding: any ; color:any};
+  ftHeadingEn: string;
+  ftHeadingUr: string;
+}
 
+const styles: styleInterface = {
+  loaderDiv: "w-full min-h-[100vh] flex justify-center items-center",
+  loader:
+    "border-t-[5px] border-blue-400 rounded-[50%] w-[120px] h-[120px] animate-spin",
+  mainDiv: "w-full min-h-[100vh]",
+  wrapperDiv:
+    "w-[90%] max-w-[400px] py-[100px] min-h-[100vh] mx-auto flex flex-col justify-between",
+  logoHeading:
+    "text-[2rem] text-[#000000] text-center tracking-[1px] font-[700]",
+  errorDiv:
+    "mb-[14px] h-fit pl-[5px] py-[10px] border-[1px] border-red-500 rounded-[3px]",
+  errorLabel: "text-red-500 text-[1rem]",
+  form: {
+    minHeight: "220px",
+    transform: "translateY(-25px)",
+    display: "flex",
+    justifyContent: "end",
+    flexDirection: "column",
+  },
+  input: {
+    width: "100%",
+  },
+  submit: { marginTop: "30px", backgroundColor: "#0189ff", padding: "8px 0px", color:'white' },
+  ftHeadingEn:
+    "text-[#000000] tracking-[1px] hover:underline hover:cursor-pointer",
+  ftHeadingUr:
+    "ml-[10px] text-[#000000] tracking-[1px] hover:underline hover:cursor-pointer",
+};
 
-const SignIn  = () => {
-    const [phoneNumber, setPhoneNumber] = useState("+92");
+const SignIn = () => {
+  const [phoneNumber, setPhoneNumber] = useState("+92");
   const [error, setError] = useState(false);
   const [confirmation, setConfirmation] = useState<any>();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-
 
   function settingCaptcha() {
     window.recaptchaVerifier = new RecaptchaVerifier(
@@ -35,55 +79,87 @@ const SignIn  = () => {
 
   async function SignIn(e: any) {
     e.preventDefault();
-    if(phoneNumber.length === 13 && phoneNumber[0] === "+" && phoneNumber[1] === "9" && phoneNumber[2] === "2" ){
-    settingCaptcha();
-    const appVerifier = window.recaptchaVerifier;
-    await signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-      .then((confirmationResult) => {
-        window.confirmationResult = confirmationResult;
-        setConfirmation(confirmationResult);
-        console.log("phone verification is working");
-        setLoading(false)
-        navigate("/otp");
-      })
-      .catch((error) => {
-        console.log(error);
-        setError(true)
-      });} else {
-        console.log("wrong number")
-        setError(true)
-      }
+    if (
+      phoneNumber.length === 13 &&
+      phoneNumber[0] === "+" &&
+      phoneNumber[1] === "9" &&
+      phoneNumber[2] === "2"
+    ) {
+      settingCaptcha();
+      setLoading(true);
+      const appVerifier = window.recaptchaVerifier;
+      await signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+        .then((confirmationResult) => {
+          window.confirmationResult = confirmationResult;
+          setConfirmation(confirmationResult);
+          console.log("phone verification is working");
+          setLoading(false);
+          navigate("/otp");
+        })
+        .catch((error) => {
+          console.log(error);
+          setError(true);
+        });
+    } else {
+      console.log("wrong number");
+      setError(true);
+    }
   }
 
   useEffect(() => {
-    setError(false)
-  },[phoneNumber])
-    
-    return (
-      <>
-      {/* ??/* /* {loading === true ?  */}
-        {/* <div className="w-full min-h-[100vh] flex justify-center items-center"> */}
-          {/* <div className="border-t-[5px] border-green-400 rounded-[50%] w-[120px] h-[120px] animate-spin"></div> */}
-        {/* </div> */}
-        <div className="w-full min-h-[100vh]">
-            <div className="w-[90%] max-w-[400px] py-[100px] min-h-[100vh] mx-auto flex flex-col justify-between">
-            <header>
-            <h1 className="text-[2rem] text-white text-center tracking-[1px] font-[700]">Darzi Record</h1>
-            </header>
-            <form className="min-h-[220px] translate-y-[-25px] flex flex-col justify-end" onSubmit={(e) => SignIn(e)}>
-                {error === true ? <div className="mb-[10px] h-fit pl-[5px] py-[10px] border-[1px] border-red-500 rounded-[3px]"><h1 className="text-red-500 text-[1rem]">Please enter correct number</h1></div> : ""}
-                <Input divClasses="w-full py-[10px] text-white" inputClasses="w-full mt-[10px] p-[10px] bg-[#404040] rounded-[5px] outline-[1px] outline-blue-400" label="Enter phone number" value={phoneNumber} onChange={(e: any) => setPhoneNumber(e.target.value)}/>
-                <Input divClasses="w-full py-[10px]" inputClasses="w-full  p-[10px] bg-blue-400 rounded-[5px] cursor-pointer text-white font-[400] tracking-[1px] hover:bg-blue-500" type="Submit" value="SIGN IN"/>
-            </form>
-            <footer className="flex justify-center items-center">
-                <h2 className="text-[white] tracking-[1px]">English</h2>
-                <h2 className="ml-[10px] text-[white] tracking-[1px]">اردو</h2>
-            </footer>
-            </div>
-            <div id="captcha-container"></div>
+    setError(false);
+  }, [phoneNumber]);
+
+  return (
+    <>
+      {loading === true ? (
+        <div className={styles.loaderDiv}>
+          <div className={styles.loader}></div>
         </div>
-        </>
-    )
-}
+      ) : (
+        <div className={styles.mainDiv}>
+          <div className={styles.wrapperDiv}>
+            <header>
+              <h1 className={styles.logoHeading}>Darzi Record</h1>
+            </header>
+            {
+              <div style={styles.form}>
+                {error === true ? (
+                  <div className={styles.errorDiv}>
+                    <h1 className={styles.errorLabel}>
+                      Please enter correct number
+                    </h1>
+                  </div>
+                ) : (
+                  ""
+                )}
+                <FormControl>
+                  <InputLabel htmlFor="my-input">Enter Phone Number</InputLabel>
+                  <Input
+                    autoFocus={true}
+                    value={phoneNumber}
+                    onChange={(e: any) => setPhoneNumber(e.target.value)}
+                    style={styles.input}
+                  />
+                  <Input
+                    style={styles.submit}
+                    type="Submit"
+                    value="Sign in"
+                    onClick={(e) => SignIn(e)}
+                  />
+                </FormControl>
+              </div>
+            }
+            <footer className="flex justify-center items-center">
+              <h2 className={styles.ftHeadingEn}>English</h2>
+              <h2 className={styles.ftHeadingUr}>اردو</h2>
+            </footer>
+          </div>
+        </div>
+      )}
+      <div id="captcha-container"></div>
+    </>
+  );
+};
 
 export default SignIn;

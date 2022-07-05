@@ -1,73 +1,114 @@
-import React,{ useState } from "react";
+import React, { useState } from "react";
 import "../../index.css";
-import Input from "../../components/Input/Input";
+import { FormControl, Input, InputLabel } from "@mui/material";
 import { useDataBase } from "../../context/bdContext";
 import { useNavigate } from "react-router-dom";
 
+interface stylesInterface {
+  mainDiv: string;
+  mainHeading: string;
+  formDiv: string;
+  form: {
+    width: string,
+    maxWidth: string,
+    margin: string,
+  },
+  input: {
+    width: string,
+    color: string,
+  };
+  submit: { marginTop: any; backgroundColor: any; padding: any; color: any, width: string };
+  mbClass: string,
+  labelPos: {
+    position: any,
+    top: any,
+    left: any
+  }
+}
+
+const styles: stylesInterface = {
+  mainDiv: "py-[50px] px-[10px]",
+  mainHeading:
+    "text-[#000000] mb-[30px] w-fit mx-auto text-[2rem] tracking-[1px]",
+  formDiv: "w-[98%] p-[5px] mx-auto flex justify-center",
+  form : {
+    width: '100%',
+    maxWidth: '400px',
+    margin: '0 auto',
+  },
+  input: {
+    width: "100%",
+    color: '#000000'
+  },
+  submit: {
+    marginTop: "30px",
+    backgroundColor: "#0189ff",
+    padding: "8px 0px",
+    color: "white",
+    width: '100%'
+  },
+  mbClass: 'mb-[20px] relative',
+  labelPos: {
+    position: 'absolute',
+    top: '0',
+    left: '-12px'
+  }
+};
 
 const CreateRecord = () => {
-    const [ name, setName ] = useState("");
-    const [ phoneNumber, setPhoneNumber ] = useState("");
-    const [ discription, setDiscripotion ] = useState("")
-    const { createRecord } = useDataBase();
-    const navigate = useNavigate();
-    
-    function newRecord (e: any) {
-        createRecord(e,name,phoneNumber,discription)
-        navigate("/se-or-add")
-    }
+  const [name, setName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [discription, setDiscripotion] = useState("");
+  const { createRecord } = useDataBase();
+  const navigate = useNavigate();
 
-    return (
-        <div className="py-[50px] px-[10px]">
-        <h1 className="text-green-400 mb-[30px] w-fit mx-auto text-[2rem] tracking-[1px]">
-          CREATE RECORD
-        </h1>
-        <div className="w-[98%] p-[5px] mx-auto">
-          <form
-            className=" w-full max-w-[500px] py-[20px] px-[5px] mx-auto"
-            onSubmit={(e) => newRecord(e)}
-          >
-            <div className="w-100%">
-              <Input
-                divClasses="w-[100%] text-[white] text-[500] rounded-[3px]"
-                inputClasses="w-[100%] p-[10px] bg-[#2E3037] rounded-[3px] outline-green-400 mt-[10px]"
-                label="Name"
-                value={name}
-                onChange={(e: any) => setName(e.target.value)}
-              />
-            </div>
-           
-           
-            <div className="mt-[14px] w-100%">
-              <Input
-                divClasses="w-[100%] text-[white] text-[500] rounded-[3px]"
-                inputClasses="w-[100%] p-[10px] bg-[#2E3037] rounded-[3px] outline-green-400 mt-[10px]"
-                label="Phone number"
-                value={phoneNumber}
-                onChange={(e: any) => setPhoneNumber(e.target.value)}
-              />
-            </div>
-            <div className="mt-[14px] w-100%">
-              <Input
-                divClasses="w-[100%]  text-[white] text-[500] rounded-[3px]"
-                inputClasses="w-[100%] p-[10px] bg-[#2E3037] rounded-[3px] outline-green-400 mt-[10px]"
-                label="Discripition"
-                value={discription}
-                onChange={(e: any) => setDiscripotion(e.target.value)}
-              />
-            </div> 
-            <div className="mt-[34px] w-100%">
-              <Input
-                divClasses="w-[100%]  text-[white] text-[500] rounded-[3px]"
-                inputClasses="w-[100%] p-[10px] bg-[#2E3037] rounded-[3px] outline-none mt-[10px] bg-green-400 text-center"
-                value="SUBMIT"
-                type="Submit"
-              />
-            </div>           
-          </form>
-        </div>
-      </div>   
-    )
-}
+  function newRecord(e: any) {
+    createRecord(e, name, phoneNumber, discription);
+    navigate("/se-or-add");
+  }
+
+  return (
+    <div className={styles.mainDiv}>
+      <h1 className={styles.mainHeading}>CREATE RECORD</h1>
+      <div className={styles.formDiv}>
+        <FormControl style={styles.form}>
+          <div className={styles.mbClass}>
+          <InputLabel htmlFor="name-input" style={styles.labelPos}>Enter name</InputLabel>
+          <Input
+            value={name}
+            onChange={(e: any) => setName(e.target.value)}
+            style={styles.input}
+            name="name-input"
+          />
+          </div>
+          <div className={styles.mbClass}>
+          <InputLabel htmlFor="phonenumber-input" style={styles.labelPos}>Enter phone number</InputLabel>
+          <Input
+            value={phoneNumber}
+            onChange={(e: any) => setPhoneNumber(e.target.value)}
+            style={styles.input}
+            name={"phonenumber-input"}
+          />
+          </div >
+          <div className={styles.mbClass}>
+          <InputLabel htmlFor="discripition-input" style={styles.labelPos}>Enter discription</InputLabel>
+          <Input
+            value={discription}
+            onChange={(e: any) => setDiscripotion(e.target.value)}
+            style={styles.input}
+            name='discripition-input'
+          />
+          </div>
+          <Input
+            style={styles.submit}
+            type="Submit"
+            value="Submit"
+            onClick={(e) => newRecord(e)}
+          />
+        </FormControl>
+      </div>
+    </div>
+  );
+};
 
 export default CreateRecord;

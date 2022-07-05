@@ -9,9 +9,6 @@ import { collection,doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 
 
-
-
-
 const SelectClothesType = () => {
     const [age, setAge] = React.useState('');
     const { orderId } = useDataBase();
@@ -44,14 +41,15 @@ const SelectClothesType = () => {
     return (
         <div className="p-[20px]">
         <div className="w-[60%] max-w-[400px]">
-        <FormControl fullWidth className="border-[1px] border-blue-400 text-[white]">
-        <InputLabel id="demo-simple-select-label" >Cloth type</InputLabel>
+        <FormControl fullWidth className="border-[1px] bg-[#404040] rounded-[5px] text-[white]">
+        <InputLabel id="demo-simple-select-label" className="text-[#ffffff]" >Cloth type</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={age}
           label="Cloth type"
           onChange={handleChange}
+          className="text-[white]"
         >
           <MenuItem value={10}>Kameez Measurements</MenuItem>
           <MenuItem value={20}>Salwar Measurements</MenuItem>

@@ -1,20 +1,53 @@
 import React, { useState, useEffect } from "react";
 import "../../index.css";
-import Input from "../../components/Input/Input";
-import Records from "../../components/Records/Records";
 import { collection, onSnapshot, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { useDataBase } from "../../context/bdContext";
 import { useNavigate } from "react-router-dom";
-import TextField from '@mui/material/TextField';
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+
+interface stylesInterface {
+  mainDiv: string,
+  wrapperDiv: string,
+  insideWrapDiv: string,
+  cardMainDiv: string,
+  card: {
+    minWidth: any,
+    backgroundColor: any,
+  },
+  typography: {
+    fontSize: number,
+    color: string,
+  };
+}
+
+const styles: stylesInterface = {
+  mainDiv: "w-full min-h-[100vh]",
+  wrapperDiv: "w-full min-h-[100vh] relative",
+  insideWrapDiv: "w-[92%] max-w-[400px] mx-auto pt-[20px]",
+  cardMainDiv: "w-fit h-fit mx-auto cursor-pointer border-[1px] border-blue-400 flex justify-center flex-col rounded-[4px] mt-[10px]",
+  card: {
+    minWidth: 275,
+    backgroundColor: "transparent",
+  },
+  typography: {
+    fontSize: 14,
+    color: "#000000",
+  },
+
+}
 
 const SearchOrAddRecord = () => {
   const [inputDisplay, setInputDisplay] = useState("none");
-  const [ loading, setLoading ] = useState(false);
-  const [ records, setRecords ] = useState<any>([]);
+  const [inputSearch, setInputSearch] = useState<any>();
+  const [loading, setLoading] = useState(false);
+  const [records, setRecords] = useState<any>([]);
   const { redocId } = useDataBase();
   const navigate = useNavigate();
-
 
   function getRecords() {
     setLoading(true);
@@ -24,7 +57,6 @@ const SearchOrAddRecord = () => {
       setLoading(false);
     });
   }
-
 
   async function updateDocument() {
     if (redocId !== "") {
@@ -43,38 +75,58 @@ const SearchOrAddRecord = () => {
     getRecords();
     updateDocument();
   }, [redocId]);
-  
+  console.log('input: ', records)
+
   return (
-    <div className="w-full min-h-[100vh]">
-      <div className="w-full min-h-[100vh] relative">
+    <div className={styles.mainDiv}>
+      <div className="">
         <div
-          style={{ display: "block" }}
-          className="w-full h-[60px] py-[20px] flex items-center"
+          className={styles.wrapperDiv}
         >
-          <div className="w-[92%] max-w-[400px] mx-auto">
-            {/* <Input
-              divClasses="w-full text-[#FFFFFF]"
-              inputClasses="w-full p-[6px] bg-transparent outline-none"
-            /> */}
-            <TextField label="Search record" focused  className="w-[100%] border-[#404040]"/>
-            {/* <div className="w-fit flex items-center px-[10px]">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                className="cursor-pointer"
-                onClick={() => setInputDisplay("none")}
-              >
-                <path
-                  fill="#FFFFFF"
-                  d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.5 16.084l-1.403 1.416-4.09-4.096-4.102 4.096-1.405-1.405 4.093-4.092-4.093-4.098 1.405-1.405 4.088 4.089 4.091-4.089 1.416 1.403-4.092 4.087 4.092 4.094z"
-                />
-              </svg> */}
-            {/* </div> */}
+          <div className={styles.insideWrapDiv}>
+            <Box
+              component="form"
+              sx={{
+                width: "100",
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <TextField
+                id="outlined-name"
+                label="Search Record"
+                value={inputSearch}
+                onChange={(e) => setInputSearch(e.target.value)}
+                className='w-[100%]'
+              />
+            </Box>
           </div>
-        </div>
-        <Records data={records} />
+        {records?.map((record: any, index: number) => (
+            <div
+              key={index}
+              className={styles.cardMainDiv}
+              onClick={() => navigate(`/details/${record.redocId}`)}
+            >
+              <Card sx={styles.card}>
+                <CardContent>
+                  <Typography
+                    sx={styles.typography}
+                    color="text.secondary"
+                    gutterBottom
+                  >
+                    Name: {record.Name}
+                  </Typography>
+                  <Typography
+                    sx={styles.typography}
+                    color="text.secondary"
+                    gutterBottom
+                  >
+                    Contact: {record.PhoneNumber}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </div>
+          ))}
         <div
           className="fixed bottom-[60px] right-[16px] shadow-[15px 4px 4px rgb(0,0,0,0.5)] bg-[#404040] rounded-[50%] w-fit h-fit p-[10px] mr-[10px] cursor-pointer"
           onClick={() => navigate("/create-record")}
@@ -105,6 +157,8 @@ const SearchOrAddRecord = () => {
           </svg>
         </div>
       </div>
+      </div>
+
     </div>
   );
 };

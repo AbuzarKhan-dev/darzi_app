@@ -1,24 +1,52 @@
-import React,{ useState } from "react";
+import React, { useState } from "react";
 import "../../index.css";
-import Input from "../../components/Input/Input";
+import { FormControl, Input, InputLabel } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-  
+interface styleInterface {
+  mainDiv: string;
+  wrapperDiv: string;
+  header: string;
+  headingOne: string;
+  form: { transform: any };
+  input: {
+    width: string;
+  };
+  submit: { marginTop: any; backgroundColor: any; padding: any; color: any };
+}
 
+const styles: styleInterface = {
+  mainDiv: "w-full min-h-[100vh]",
+  wrapperDiv:
+    "w-[90%] max-w-[400px] py-[100px] min-h-[100vh] mx-auto flex flex-col justify-around",
+  header: "translate-y-[-10px]",
+  headingOne:
+    "text-[2rem] text-[#000000] text-center tracking-[2px] font-[700]",
+  form: { transform: "translateY(-45px)" },
+  input: {
+    width: "100%",
+  },
+  submit: {
+    marginTop: "20px",
+    backgroundColor: "#0189ff",
+    padding: "8px 0px",
+    color: "white",
+  },
+};
 
-const Otp  = () => {
+const Otp = () => {
   const [otp, setOtp] = useState<string>("");
   const navigate = useNavigate();
 
-  function conf(e: any,otp:string) {
-      e.preventDefault();
-    console.log("code => ", otp);
-      window.confirmationResult
-      .confirm(otp)
+  function conf(e: any, otpNumber: string) {
+    e.preventDefault();
+    console.log("code => ", otpNumber);
+    window.confirmationResult
+      .confirm(otpNumber)
       .then((result: any) => {
         // User signed in successfully.
         const user = result.user;
-        navigate("/home")
+        navigate("/home");
 
         console.log("user is signedIN", user);
         // ...
@@ -29,21 +57,31 @@ const Otp  = () => {
       });
   }
 
-    
-    return (
-        <div className="w-full min-h-[100vh]">
-            <div className="w-[90%] max-w-[400px] py-[100px] min-h-[100vh] mx-auto flex flex-col justify-around">
-            <header className="translate-y-[-35px]">
-            <h1 className="text-[2rem] text-white text-center tracking-[2px] font-[700]">OTP</h1>
-            </header>
-            <form className="min-h-[220px] translate-y-[-105px] flex flex-col justify-end" onSubmit={(e) => conf(e, otp)}>
-                <Input divClasses="w-full py-[10px] text-white" inputClasses="w-full mt-[10px] p-[10px] bg-[#404040] rounded-[5px] outline-[1px] outline-blue-400" label="Enter OTP" value={otp} onChange={(e: any) => setOtp(e.target.value)}/>
-                <Input divClasses="w-full py-[10px]" inputClasses="w-full  p-[10px] bg-blue-400 rounded-[5px] cursor-pointer text-white font-[400] tracking-[1px] hover:bg-blue-500" type="Submit" value="SUBMIT"/>
-            </form>
-            </div>
-            <div id="captcha-container"></div>
-        </div>
-    )
-}
+  return (
+    <div className={styles.mainDiv}>
+      <div className={styles.wrapperDiv}>
+        <header className={styles.header}>
+          <h1 className={styles.headingOne}>OTP</h1>
+        </header>
+        <FormControl style={styles.form}>
+          <InputLabel htmlFor="my-input">Enter OTP</InputLabel>
+          <Input
+            autoFocus={true}
+            value={otp}
+            onChange={(e: any) => setOtp(e.target.value)}
+            style={styles.input}
+          />
+          <Input
+            style={styles.submit}
+            type="Submit"
+            value="Submit"
+            onClick={(e) => conf(e, otp)}
+          />
+        </FormControl>
+      </div>
+      <div id="captcha-container"></div>
+    </div>
+  );
+};
 
 export default Otp;

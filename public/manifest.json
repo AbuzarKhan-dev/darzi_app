@@ -1,7 +1,7 @@
 {
   "name": "Progressive web app",
   "short_name": "progressiveWebApp",
-  "start_url": ".",
+  "start_url": "/sign_in",
   "display": "standalone",
   "background_color": "#FFE9D2",
   "theme_color" : "#FFFFFF",
