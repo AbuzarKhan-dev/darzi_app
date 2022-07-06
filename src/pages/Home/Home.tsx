@@ -4,9 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { collection, onSnapshot, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebaseConfig";
 import { useDataBase } from "../../context/bdContext";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 
 interface stylesInterface {
   loaderDiv: string;
@@ -14,14 +15,8 @@ interface stylesInterface {
   mainDiv: string;
   buttonDiv: string;
   cardMainDiv: string;
-  card: {
-    minWidth: any;
-    backgroundColor: any;
-  };
-  typography: {
-    fontSize: number;
-    color: string;
-  };
+  list: string;
+  listItem: string;
 }
 
 const styles: stylesInterface = {
@@ -33,14 +28,8 @@ const styles: stylesInterface = {
     "fixed bottom-[40px] right-[20px] cursor-pointer w-fit h-fit bg-blue-500 flex justify-center items-center py-[20px] px-[20px] rounded-[50%] shadow-md shadow-[#404040]",
   cardMainDiv:
     "w-fit h-fit cursor-pointer border-[1px] border-blue-400 flex justify-center flex-col rounded-[4px] mt-[10px]",
-  card: {
-    minWidth: 275,
-    backgroundColor: "transparent",
-  },
-  typography: {
-    fontSize: 14,
-    color: "#000000",
-  },
+  list: "w-[100%] min-w-[230px]",
+  listItem: "px-[10px]",
 };
 interface PropsInterface {
   divClasses?: string;
@@ -113,24 +102,20 @@ const Home = ({ divClasses }: PropsInterface) => {
               className={styles.cardMainDiv}
               onClick={() => navigate(`/details/${order.DocID}`)}
             >
-              <Card sx={styles.card}>
-                <CardContent>
-                  <Typography
-                    sx={styles.typography}
-                    color="text.secondary"
-                    gutterBottom
-                  >
-                    Name: {order.Name}
-                  </Typography>
-                  <Typography
-                    sx={styles.typography}
-                    color="text.secondary"
-                    gutterBottom
-                  >
-                    Contact: {order.PhoneNunmber}
-                  </Typography>
-                </CardContent>
-              </Card>
+              <Box
+                sx={{
+                  width: "100%",
+                  maxWidth: 360,
+                  bgcolor: "background.paper",
+                }}
+              >
+                <List className={styles.list}>
+                  <ListItem className={styles.listItem} disablePadding>
+                    <ListItemText primary={order.Name} />
+                    <ListItemText primary={order.PhoneNumber} />
+                  </ListItem>
+                </List>
+              </Box>
             </div>
           ))}
         </div>

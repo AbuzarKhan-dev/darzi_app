@@ -59,10 +59,11 @@ const DbProvider = ({ children }: PropsInterface) => {
     endDate: string,
     totalCost: string,
     advancePaid: string,
-    leftPayment: string
+    leftPayment: string,
+    orderID: string,
   ) {
     e.preventDefault();
-    const colRef = collection(db, "Orders");
+    const colRef = collection(db, "Records", orderID, "new_order");
     
     try {
       const docRef = await addDoc(colRef, {
@@ -100,9 +101,10 @@ const DbProvider = ({ children }: PropsInterface) => {
 
     async function newOrder (e: any, orderID: string, type: string, inputOne: string, inputTwo: string, inputThree: string) {
       e.preventDefault();
-      const colRef = collection(db, "Records", orderID, type);
+      const colRef = collection(db, "Records", orderID, 'measurements');
       try {
           await addDoc(colRef, {
+          type: type,
           width: inputOne,
           height: inputTwo,
           label : inputThree

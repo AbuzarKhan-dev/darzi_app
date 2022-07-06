@@ -60,7 +60,8 @@ const CreateOrder = () => {
         endDate,
         totalCost,
         advancePaid,
-        leftPayment
+        leftPayment,
+        id
       );
     navigate("/home");
   }
@@ -69,6 +70,7 @@ const CreateOrder = () => {
     getDoc();
 
   },[])
+  console.log("id:",id)
 
   return (
         <div className="py-[50px] px-[10px]">

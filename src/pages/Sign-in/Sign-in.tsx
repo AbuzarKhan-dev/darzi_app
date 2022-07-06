@@ -23,7 +23,7 @@ interface styleInterface {
   input: {
     width: string;
   };
-  submit: { marginTop: any; backgroundColor: any; padding: any ; color:any};
+  submit: { marginTop: any; backgroundColor: any; padding: any ; color:any, cursor:any};
   ftHeadingEn: string;
   ftHeadingUr: string;
 }
@@ -50,7 +50,7 @@ const styles: styleInterface = {
   input: {
     width: "100%",
   },
-  submit: { marginTop: "30px", backgroundColor: "#0189ff", padding: "8px 0px", color:'white' },
+  submit: { marginTop: "10px", backgroundColor: "#0189ff", padding: "8px 0px", color:'white', cursor: 'pointer' },
   ftHeadingEn:
     "text-[#000000] tracking-[1px] hover:underline hover:cursor-pointer",
   ftHeadingUr:
@@ -58,10 +58,11 @@ const styles: styleInterface = {
 };
 
 const SignIn = () => {
-  const [phoneNumber, setPhoneNumber] = useState("+92");
+  const [phoneNumber, setPhoneNumber] = useState('+92');
   const [error, setError] = useState(false);
   const [confirmation, setConfirmation] = useState<any>();
   const [loading, setLoading] = useState(false);
+  const [disable, setdisable] = useState(false);
   const navigate = useNavigate();
 
   function settingCaptcha() {
@@ -86,7 +87,7 @@ const SignIn = () => {
       phoneNumber[2] === "2"
     ) {
       settingCaptcha();
-      setLoading(true);
+      setdisable(true);
       const appVerifier = window.recaptchaVerifier;
       await signInWithPhoneNumber(auth, phoneNumber, appVerifier)
         .then((confirmationResult) => {
@@ -147,6 +148,7 @@ const SignIn = () => {
                     type="Submit"
                     value="Sign in"
                     onClick={(e) => SignIn(e)}
+                    disabled={disable}
                   />
                 </FormControl>
               </div>
