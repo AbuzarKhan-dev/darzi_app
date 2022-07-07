@@ -27,9 +27,9 @@ interface stylesInterface {
 }
 
 const styles: stylesInterface = {
-  mainDiv: "py-[50px] px-[10px]",
+  mainDiv: "py-[60px] px-[10px] min-h-[80vh] max-h-[100vh]",
   mainHeading:
-    "text-[#000000] mb-[30px] w-fit mx-auto text-[2rem] tracking-[1px]",
+    "text-[#000000] mb-[50px] w-fit mx-auto text-[2rem] tracking-[1px]",
   formDiv: "w-[98%] p-[5px] mx-auto flex justify-center",
   form : {
     width: '100%',

@@ -16,9 +16,9 @@ interface styleInterface {
 }
 
 const styles: styleInterface = {
-  mainDiv: "w-full min-h-[100vh]",
+  mainDiv: "w-full min-h-[100vh] flex items-center",
   wrapperDiv:
-    "w-[90%] max-w-[400px] py-[100px] min-h-[100vh] mx-auto flex flex-col justify-around",
+    "w-[90%] max-w-[400px] pt-[0px] min-h-[40vh] mx-auto flex flex-col justify-between",
   header: "translate-y-[-10px]",
   headingOne:
     "text-[2rem] text-[#000000] text-center tracking-[2px] font-[700]",

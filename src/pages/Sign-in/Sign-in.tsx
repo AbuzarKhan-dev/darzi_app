@@ -23,9 +23,16 @@ interface styleInterface {
   input: {
     width: string;
   };
-  submit: { marginTop: any; backgroundColor: any; padding: any ; color:any, cursor:any};
+  submit: {
+    marginTop: any;
+    backgroundColor: any;
+    padding: any;
+    color: any;
+    cursor: any;
+  };
   ftHeadingEn: string;
   ftHeadingUr: string;
+  footerClass: string;
 }
 
 const styles: styleInterface = {
@@ -41,7 +48,7 @@ const styles: styleInterface = {
     "mb-[14px] h-fit pl-[5px] py-[10px] border-[1px] border-red-500 rounded-[3px]",
   errorLabel: "text-red-500 text-[1rem]",
   form: {
-    minHeight: "220px",
+    minHeight: "180px",
     transform: "translateY(-25px)",
     display: "flex",
     justifyContent: "end",
@@ -50,15 +57,22 @@ const styles: styleInterface = {
   input: {
     width: "100%",
   },
-  submit: { marginTop: "10px", backgroundColor: "#0189ff", padding: "8px 0px", color:'white', cursor: 'pointer' },
+  submit: {
+    marginTop: "10px",
+    backgroundColor: "#0189ff",
+    padding: "8px 0px",
+    color: "white",
+    cursor: "pointer",
+  },
   ftHeadingEn:
     "text-[#000000] tracking-[1px] hover:underline hover:cursor-pointer",
   ftHeadingUr:
     "ml-[10px] text-[#000000] tracking-[1px] hover:underline hover:cursor-pointer",
+  footerClass: "flex justify-center items-center",
 };
 
 const SignIn = () => {
-  const [phoneNumber, setPhoneNumber] = useState('+92');
+  const [phoneNumber, setPhoneNumber] = useState("+92");
   const [error, setError] = useState(false);
   const [confirmation, setConfirmation] = useState<any>();
   const [loading, setLoading] = useState(false);
@@ -109,9 +123,9 @@ const SignIn = () => {
 
   useEffect(() => {
     setError(false);
-    console.log('new patch')
+    console.log("patch 3.0");
   }, [phoneNumber]);
-  
+
   return (
     <>
       {loading === true ? (
@@ -153,7 +167,7 @@ const SignIn = () => {
                 </FormControl>
               </div>
             }
-            <footer className="flex justify-center items-center">
+            <footer className={styles.footerClass}>
               <h2 className={styles.ftHeadingEn}>English</h2>
               <h2 className={styles.ftHeadingUr}>اردو</h2>
             </footer>

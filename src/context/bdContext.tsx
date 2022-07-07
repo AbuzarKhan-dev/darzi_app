@@ -7,7 +7,7 @@ interface AppContextInterface {
   createOrder?: any;
   newOrder?: any;
   redocId?: string;
-  orderId?: string,
+  orderId?: string;
   id?: string;
   setDocId?: any;
   docid?: string;
@@ -28,11 +28,15 @@ interface PropsInterface {
 const DbProvider = ({ children }: PropsInterface) => {
   const [docid, setDocId] = useState("");
   const [id, setid] = useState("");
-  const [ redocId, setredocId ] = useState("");
-  const [orderId, setOrderId ] = useState<any>("");
+  const [redocId, setredocId] = useState("");
+  const [orderId, setOrderId] = useState<any>("");
 
-
-  async function createRecord(e: any,name: string, phoneNumber: string, discription: string ) {
+  async function createRecord(
+    e: any,
+    name: string,
+    phoneNumber: string,
+    discription: string
+  ) {
     e.preventDefault();
     try {
       const colRef = collection(db, "Records");
@@ -60,11 +64,11 @@ const DbProvider = ({ children }: PropsInterface) => {
     totalCost: string,
     advancePaid: string,
     leftPayment: string,
-    orderID: string,
+    orderID: string
   ) {
     e.preventDefault();
-    const colRef = collection(db, "Records", orderID, "new_order");
-    
+    const colRef = collection(db, "new_order");
+
     try {
       const docRef = await addDoc(colRef, {
         Name: name,
@@ -76,7 +80,7 @@ const DbProvider = ({ children }: PropsInterface) => {
         TotalCost: totalCost,
         AdvancePaid: advancePaid,
         LeftPayment: leftPayment,
-        DocID: "",
+        uid: orderID,
       });
       setid(docRef.id);
     } catch (e) {
@@ -84,36 +88,43 @@ const DbProvider = ({ children }: PropsInterface) => {
     }
   }
 
-    // async function newOrder (name: string, phoneNumber: string) {
-    //   const colRef = collection(db, "order");
-    //   try {
-    //     const docRef = await addDoc(colRef, {
-    //       name,
-    //       phoneNumber,
-    //       orderID: "",
-    //     })
-    //    setOrderId(docRef.id)
-    //   }
-    //   catch (e) {
-    //      console.log("error:", e)
-    //   }
-    // }
+  // async function newOrder (name: string, phoneNumber: string) {
+  //   const colRef = collection(db, "order");
+  //   try {
+  //     const docRef = await addDoc(colRef, {
+  //       name,
+  //       phoneNumber,
+  //       orderID: "",
+  //     })
+  //    setOrderId(docRef.id)
+  //   }
+  //   catch (e) {
+  //      console.log("error:", e)
+  //   }
+  // }
 
-    async function newOrder (e: any, orderID: string, type: string, inputOne: string, inputTwo: string, inputThree: string) {
-      e.preventDefault();
-      const colRef = collection(db, "Records", orderID, 'measurements');
-      try {
-          await addDoc(colRef, {
-          type: type,
-          width: inputOne,
-          height: inputTwo,
-          label : inputThree
-        })
-      }
-      catch (e) {
-         console.log("error:", e)
-      }
+  async function newOrder(
+    e: any,
+    orderID: string,
+    type: string,
+    inputOne: string,
+    inputTwo: string,
+    inputThree: string
+  ) {
+    e.preventDefault();
+    const colRef = collection(db, "measurements");
+    try {
+      await addDoc(colRef, {
+        type: type,
+        width: inputOne,
+        height: inputTwo,
+        label: inputThree,
+        uid: orderID,
+      });
+    } catch (e) {
+      console.log("error:", e);
     }
+  }
 
   const AppContextValue: AppContextInterface = {
     createRecord,

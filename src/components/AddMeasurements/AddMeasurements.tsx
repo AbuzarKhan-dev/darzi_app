@@ -33,10 +33,10 @@ interface stylesInterface {
 }
 
 const styles: stylesInterface = {
-  mainDiv: "py-[50px] px-[10px]",
+  mainDiv: "py-[50px] px-[30px]",
   mainHeading:
     "text-[#000000] mb-[30px] w-fit mx-auto text-[2rem] tracking-[1px]",
-  formDiv: "w-[98%] p-[5px] mx-auto flex justify-center",
+  formDiv: "w-[100%]",
   form: {
     width: "100%",
     maxWidth: "400px",
@@ -88,7 +88,7 @@ const AddMeasurements = () => {
   console.log("orderID:", orderID, "type:", type);
 
   return (
-    <div className="min-h-[100vh] w-[100%] max-w-[400px] mx-auto py-[50px]">
+    <div className="min-h-[100vh] w-[94%] max-w-[400px] mx-auto py-[50px]">
       <h1 className="text-[#404040] text-[28px] text-center mb-[50px]">
         {type}
       </h1>
